@@ -149,7 +149,7 @@
 
     <div class="max-w-6xl mx-auto px-5 md:px-8 py-6 md:py-10 space-y-10 md:space-y-14">
         
-        <!-- HERO SECTION — with round logo </> and 10+ Projects counter -->
+        <!-- HERO SECTION — with round logo </> and "Impactful Projects" static button -->
         <header class="glass-card p-6 md:p-12 lg:p-16 text-center relative overflow-hidden reveal" role="banner">
             <!-- floating gradient blurs -->
             <div class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
@@ -169,10 +169,10 @@
                     Crafting digital products, <br>brands, and experience.
                 </h1>
                 
-                <!-- Project count button with animated counter -->
+                <!-- Static Impactful Projects button (no counter) -->
                 <div class="mt-9 inline-flex">
-                    <button id="projectCounterBtn" class="pill-btn pill-btn-primary px-7 py-3.5 text-base font-semibold focus-ring shadow-md transition-all hover:shadow-xl">
-                        <span id="projectCountDisplay">0</span><span> + Impactful Projects</span>
+                    <button id="projectBtn" class="pill-btn pill-btn-primary px-7 py-3.5 text-base font-semibold focus-ring shadow-md transition-all hover:shadow-xl">
+                        Impactful Projects
                     </button>
                 </div>
             </div>
@@ -279,47 +279,6 @@
 
     <script>
         (function() {
-            // Animated counter from 0 → 10 when hero is visible
-            const counterSpan = document.getElementById('projectCountDisplay');
-            if (counterSpan) {
-                const target = 10;
-                let animated = false;
-                const hero = document.querySelector('header');
-                
-                function startCounter() {
-                    if (animated) return;
-                    animated = true;
-                    let current = 0;
-                    const duration = 1200;
-                    const stepTime = 20;
-                    const steps = duration / stepTime;
-                    const increment = target / steps;
-                    const interval = setInterval(() => {
-                        current += increment;
-                        if (current >= target) {
-                            counterSpan.innerText = target;
-                            clearInterval(interval);
-                        } else {
-                            counterSpan.innerText = Math.floor(current);
-                        }
-                    }, stepTime);
-                }
-                
-                if (hero) {
-                    const observer = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting && !animated) {
-                                startCounter();
-                                observer.unobserve(entry.target);
-                            }
-                        });
-                    }, { threshold: 0.3 });
-                    observer.observe(hero);
-                } else {
-                    startCounter();
-                }
-            }
-            
             // Reveal animations on scroll
             const revealElements = document.querySelectorAll('.reveal');
             if (revealElements.length) {
@@ -348,13 +307,20 @@
                 });
             });
             
-            // Click on project counter button scrolls to services
-            const counterBtn = document.getElementById('projectCounterBtn');
-            if (counterBtn) {
-                counterBtn.addEventListener('click', () => {
-                    const servicesSection = document.querySelector('.service-card');
-                    if (servicesSection) {
-                        servicesSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Click on "Impactful Projects" button scrolls to the services section
+            const projectBtn = document.getElementById('projectBtn');
+            if (projectBtn) {
+                projectBtn.addEventListener('click', () => {
+                    // Find the first service card (within services section)
+                    const firstServiceCard = document.querySelector('.service-card');
+                    if (firstServiceCard) {
+                        firstServiceCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        // Fallback: scroll to services heading
+                        const servicesHeading = document.getElementById('services-heading');
+                        if (servicesHeading) {
+                            servicesHeading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
                     }
                 });
             }
